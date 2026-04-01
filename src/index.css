@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-pixel: "Pixelify Sans", sans-serif;
+  
+  --color-plum: #0A0A0A;
+  --color-rose: #FF3E6C;
+  --color-peach: #FFB4A2;
+  --color-cream: #F5F5F5;
+  --color-soft-pink: #FFD1DC;
+}
+
+@layer base {
+  body {
+    @apply bg-plum text-cream font-sans selection:bg-rose selection:text-white overflow-x-hidden antialiased;
+    background-image: radial-gradient(rgba(255, 62, 108, 0.15) 2px, transparent 2px);
+    background-size: 24px 24px;
+    background-position: 0 0;
+  }
+
+  h1, h2, h3 {
+    @apply font-pixel font-normal tracking-wide;
+  }
+}
+
+@layer components {
+  .pixel-panel {
+    @apply bg-plum/40 border border-white/10 backdrop-blur-xl relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .pixel-panel:hover {
+    box-shadow: 0 12px 48px rgba(255, 62, 108, 0.15);
+    border-color: rgba(255, 62, 108, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .pixel-corners {
+    clip-path: polygon(
+      0 2px, 2px 2px, 2px 0,
+      calc(100% - 2px) 0, calc(100% - 2px) 2px, 100% 2px,
+      100% calc(100% - 2px), calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 100%,
+      2px 100%, 2px calc(100% - 2px), 0 calc(100% - 2px)
+    );
+  }
+
+  .pixel-art {
+    image-rendering: pixelated;
+    shape-rendering: crispEdges;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% center; }
+    100% { background-position: -200% center; }
+  }
+
+  .animate-shimmer {
+    background: linear-gradient(90deg, var(--color-cream) 0%, var(--color-rose) 50%, var(--color-cream) 100%);
+    background-size: 200% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shimmer 8s linear infinite;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 15px rgba(255, 62, 108, 0.5);
+  }
+
+  .text-shimmer-sweep {
+    background: linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0.7) 40%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 0.7) 60%,
+      rgba(255, 255, 255, 0.7) 100%
+    );
+    background-size: 250% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: sweep 6s linear infinite;
+  }
+
+  @keyframes sweep {
+    0% { background-position: 200% center; }
+    100% { background-position: -200% center; }
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 50;
+    mix-blend-mode: overlay;
+    will-change: transform;
+  }
+
+  .section-divider {
+    @apply w-1 h-32 bg-gradient-to-b from-transparent via-rose/40 to-transparent mx-auto my-24;
+  }
+
+  .mesh-gradient {
+    @apply fixed inset-0 z-[-2] opacity-20;
+    background: radial-gradient(circle at 20% 30%, var(--color-rose) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, var(--color-peach) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, var(--color-plum) 0%, transparent 100%);
+    filter: blur(40px) saturate(1.2);
+    animation: mesh-float 60s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  @keyframes mesh-float {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.05) translate(1%, 1%); }
+  }
+}
+
+/* Custom Cursor */
+.custom-cursor {
+  @apply fixed w-4 h-4 bg-rose pointer-events-none z-[9999] mix-blend-difference hidden lg:block;
+  transition: transform 0.1s ease;
+}
+
+/* Hide scrollbar */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
